@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1023</width>
+    <height>683</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>DataMining</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(201, 218, 220)</string>
+  </property>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>40</y>
+     <width>911</width>
+     <height>591</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="encodage">
+    <attribute name="title">
+     <string>Encodage</string>
+    </attribute>
+    <widget class="QTextEdit" name="secretText_encodage">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>30</y>
+       <width>311</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="placeholderText">
+      <string>Entrer votre texte secret</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="verticalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>140</y>
+       <width>481</width>
+       <height>351</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="plot_img_encodage"/>
+    </widget>
+    <widget class="QPushButton" name="btn_import_encodage">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>20</y>
+       <width>171</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>-1</pointsize>
+       <bold>false</bold>
+       <underline>false</underline>
+       <strikeout>false</strikeout>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+  align-items: center;
+  background-color: rgb(138, 166, 180);
+  border-radius: 8px;
+  border-width: 0;
+  box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1),0 3px 6px rgba(0, 0, 0, .05);
+  box-sizing: border-box;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: column;
+  font-size: 13px;
+  height: 52px;
+  justify-content: center;
+  line-height: 1;
+  margin: 0;
+  outline: none;
+  overflow: hidden;
+  padding: 0 32px;
+  text-align: center;
+  text-decoration: none;
+  transform: translate3d(0, 0, 0);
+  transition: all 150ms;
+  vertical-align: baseline;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+QPushButton:hover {
+  box-shadow: rgba(0, 1, 0, .2) 0 2px 8px;
+  opacity: .85;
+}
+
+QPushButton:active {
+  outline: 0;
+}
+
+QPushButton:focus {
+  box-shadow: rgba(0, 0, 0, .5) 0 0 0 3px;
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>Importer image</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_encodage">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>390</y>
+       <width>171</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+  align-items: center;
+  background-color: rgb(138, 166, 180);
+  border-radius: 8px;
+  border-width: 0;
+  box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1),0 3px 6px rgba(0, 0, 0, .05);
+  box-sizing: border-box;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: column;
+  font-size: 13px;
+  height: 52px;
+  justify-content: center;
+  line-height: 1;
+  margin: 0;
+  outline: none;
+  overflow: hidden;
+  padding: 0 32px;
+  text-align: center;
+  text-decoration: none;
+  transform: translate3d(0, 0, 0);
+  transition: all 150ms;
+  vertical-align: baseline;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+QPushButton:hover {
+  box-shadow: rgba(0, 1, 0, .2) 0 2px 8px;
+  opacity: .85;
+}
+
+QPushButton:active {
+  outline: 0;
+}
+
+QPushButton:focus {
+  box-shadow: rgba(0, 0, 0, .5) 0 0 0 3px;
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>Encoder</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="decodage">
+    <attribute name="title">
+     <string>Decodage</string>
+    </attribute>
+    <widget class="QPushButton" name="btn_import_decodage">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>20</y>
+       <width>171</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>-1</pointsize>
+       <bold>false</bold>
+       <underline>false</underline>
+       <strikeout>false</strikeout>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+  align-items: center;
+  background-color: rgb(138, 166, 180);
+  border-radius: 8px;
+  border-width: 0;
+  box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1),0 3px 6px rgba(0, 0, 0, .05);
+  box-sizing: border-box;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: column;
+  font-size: 13px;
+  height: 52px;
+  justify-content: center;
+  line-height: 1;
+  margin: 0;
+  outline: none;
+  overflow: hidden;
+  padding: 0 32px;
+  text-align: center;
+  text-decoration: none;
+  transform: translate3d(0, 0, 0);
+  transition: all 150ms;
+  vertical-align: baseline;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+QPushButton:hover {
+  box-shadow: rgba(0, 1, 0, .2) 0 2px 8px;
+  opacity: .85;
+}
+
+QPushButton:active {
+  outline: 0;
+}
+
+QPushButton:focus {
+  box-shadow: rgba(0, 0, 0, .5) 0 0 0 3px;
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>Importer image</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="verticalLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>30</y>
+       <width>481</width>
+       <height>351</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="plot_img_decodage"/>
+    </widget>
+    <widget class="QPushButton" name="btn_decodage">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>390</y>
+       <width>171</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+  align-items: center;
+  background-color: rgb(138, 166, 180);
+  border-radius: 8px;
+  border-width: 0;
+  box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1),0 3px 6px rgba(0, 0, 0, .05);
+  box-sizing: border-box;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: column;
+  font-size: 13px;
+  height: 52px;
+  justify-content: center;
+  line-height: 1;
+  margin: 0;
+  outline: none;
+  overflow: hidden;
+  padding: 0 32px;
+  text-align: center;
+  text-decoration: none;
+  transform: translate3d(0, 0, 0);
+  transition: all 150ms;
+  vertical-align: baseline;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+QPushButton:hover {
+  box-shadow: rgba(0, 1, 0, .2) 0 2px 8px;
+  opacity: .85;
+}
+
+QPushButton:active {
+  outline: 0;
+}
+
+QPushButton:focus {
+  box-shadow: rgba(0, 0, 0, .5) 0 0 0 3px;
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>Encoder</string>
+     </property>
+    </widget>
+    <widget class="QTextEdit" name="secretText_decodage">
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>400</y>
+       <width>311</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+     <property name="placeholderText">
+      <string>Le texte secret</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
