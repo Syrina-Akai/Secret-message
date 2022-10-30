@@ -92,26 +92,9 @@ class Ui(QtWidgets.QMainWindow):
                 print("image vide")
             else : 
                 self.getPlot(layout='decodage')
-        
-
 
     def enregistrer_img(self):
-        """if self.data_file_type == "xlsx": 
-            dialog = QtWidgets.QFileDialog()
-            name = dialog.getSaveFileName(self,"Save File","","Excel (*.xlsx)")
-            if(name[0]!=''):
-                self.data.to_excel(name[0], index=False)
-        elif self.data_file_type == "csv":
-            dialog = QtWidgets.QFileDialog()
-            name = dialog.getSaveFileName(self,"Save File","","CSV (*.csv)")
-            if(name[0]!=''):
-                self.data.to_csv(name[0], index=False)
-        elif self.data_file_type == "json":
-            dialog = QtWidgets.QFileDialog()
-            name = dialog.getSaveFileName(self,"Save File","","JSON (*.json)")
-            if(name[0]!=''):
-                self.data.to_json(name[0], index=False)"""
-        pass
+        cv2.imwrite(f"image_new.{self.data_file_type}",self.img)
 
     def clearPlotLayout(self, layout):
         if layout == 'encodage' :
@@ -120,8 +103,6 @@ class Ui(QtWidgets.QMainWindow):
         elif layout == 'decodage' :
             for i in reversed(range(self.plot_img_decodage.count())): 
                 self.plot_img_decodage.itemAt(i).widget().deleteLater()
-        
-
             
     def getPlot(self, layout):
         fig, ax = plt.subplots()
@@ -133,15 +114,7 @@ class Ui(QtWidgets.QMainWindow):
             self.plot_img_encodage.addWidget(self.canvas)
         elif layout == 'decodage' :
             self.plot_img_decodage.addWidget(self.canvas)
-        self.canvas.draw()
-    
-
-    
-  
-
-    
-
-        
+        self.canvas.draw() 
 
 
 if __name__ == '__main__':
