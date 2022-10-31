@@ -31,8 +31,12 @@ def create_img_with_text(text):
 
     len_txt = len(text)
     # for each caracter in the text we need 4 pixels 
-    img_shapes = int(((len_txt*4)**(1/3))) +1
-    img = np.zeros((img_shapes, img_shapes, img_shapes), dtype = np.uint8)
+    img_shapes = int(((len_txt*4)**(1/2)))
+    print(img_shapes)
+
+    print(img_shapes)
+    
+    img = np.zeros((img_shapes, img_shapes, 3), dtype = np.uint8)
 
     text_bit = []
     for char in text:
@@ -41,21 +45,23 @@ def create_img_with_text(text):
 
     img_ravel = img.ravel()
     len_img_bit = len(img_ravel)
-
+    len_text = len(text_bit)
     for i in range(len_img_bit):
-        if i+1 == len_img_bit:
+        if i+1 == len_img_bit or i+1 == len_text:
             break
         img_ravel[i] = change_bits(img_ravel[i], text_bit[i], text_bit[i+1])
 
-    shape = (img_shapes,img_shapes, img_shapes)
+    shape = (img_shapes,img_shapes, 3)
     img = img_ravel.reshape(shape)
-    img_RGB = cv2.imread("message_in_image.png", cv2.COLOR_RGB2BGR)
-    print(img)
+    #img_RGB = cv2.imread("message_in_image.png", cv2.COLOR_RGB2BGR)
     #cv2.imwrite("message_in.jpg", img)
-    cv2.imshow('i\'m the message1', img)
+    cv2.imshow('the message1', img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
     return img
 
-print(create_img_with_text("hello world"))
+texte = "Osamu Dazai (太宰 治, Dazai Osamu, June 19, 1909 – June 13, 1948) was a Japanese author. A number of his most popular works, such as The Setting Sun (Shayō) and No Longer Human (Ningen Shikkaku), are considered modern-day classics.[2] His influences include Ryūnosuke Akutagawa, Murasaki Shikibu and Fyodor Dostoyevsky. While Dazai continues to be widely celebrated in Japan, he remains relatively unknown elsewhere, with only a handful of his works available in English. His last book, No Longer Human"
+print(len(texte))
+create_img_with_text(texte)
+
