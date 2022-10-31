@@ -48,6 +48,6 @@ class Encode():
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
-img = cv2.imread('test.jpg', cv2.IMREAD_COLOR)
+img = cv2.imread('bojji.png', cv2.IMREAD_COLOR)
 encode = Encode(img, 'hillow')
 encode.encodeImge()

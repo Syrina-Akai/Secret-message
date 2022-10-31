@@ -31,11 +31,7 @@ def create_img_with_text(text):
 
     len_txt = len(text)
     # for each caracter in the text we need 4 pixels 
-    img_shapes = int(((len_txt*4)**(1/2)))
-    print(img_shapes)
-
-    print(img_shapes)
-    
+    img_shapes = int(((len_txt*4)**(1/2)))    
     img = np.zeros((img_shapes, img_shapes, 3), dtype = np.uint8)
 
     text_bit = []
@@ -53,15 +49,89 @@ def create_img_with_text(text):
 
     shape = (img_shapes,img_shapes, 3)
     img = img_ravel.reshape(shape)
-    #img_RGB = cv2.imread("message_in_image.png", cv2.COLOR_RGB2BGR)
-    #cv2.imwrite("message_in.jpg", img)
-    cv2.imshow('the message1', img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
+    
     return img
 
-texte = "Osamu Dazai (太宰 治, Dazai Osamu, June 19, 1909 – June 13, 1948) was a Japanese author. A number of his most popular works, such as The Setting Sun (Shayō) and No Longer Human (Ningen Shikkaku), are considered modern-day classics.[2] His influences include Ryūnosuke Akutagawa, Murasaki Shikibu and Fyodor Dostoyevsky. While Dazai continues to be widely celebrated in Japan, he remains relatively unknown elsewhere, with only a handful of his works available in English. His last book, No Longer Human"
-print(len(texte))
-create_img_with_text(texte)
+def insert_img(value_A, value_B):
+    value_A = standerdize_length(to_bin(value_A))
+    value_A[7:] = value_B
+    return int("".join(value_A),2)
 
+"""
+    imgA = cv2.imread('test.jpg', cv2.COLOR_BGR2YCrCb)
+    imgA=np.uint16(imgA)*255
+    imgB = create_img_with_text("hello world, it's me Mariò")
+""" 
+def encodage(imgA_path, text):
+
+    imgA = cv2.imread(imgA_path, cv2.COLOR_BGR2RGB)
+    imgA = cv2.cvtColor(imgA, cv2.COLOR_RGB2YCrCb)
+    len_text = len(text)
+    len_img = imgA.shape[0]*imgA.shape[1] *4
+    if len_text> len_img: raise ValueError()
+    else:
+        imgA=np.uint16(imgA)*255
+        imgB = create_img_with_text(text)  
+    
+        # COnvert last 4 bits of mgA ro 0111***********
+        imgA_ravel = imgA.ravel()
+        for i in range(len(imgA_ravel)):
+            imgA_ravel_i= standerdize_length(to_bin(imgA_ravel[i]))
+            imgA_ravel_i[-4:] = ['0','1','1','1']
+            imgA_ravel[i] = int("".join(imgA_ravel_i),2)
+        imgA = imgA_ravel.reshape(imgA.shape)
+        #*******************************
+
+        # Use only cr cb ********************
+        img_cr = imgA[:, :, 1]
+        img_cb = imgA[:, :, 2]
+        imgB_ravel = imgB.ravel()
+
+        img_cr_ravel = img_cr.ravel()
+        img_cb_ravel = img_cb.ravel()
+        imgB_ravel_1 = imgB_ravel[:len(imgB_ravel)//2]
+        imgB_ravel_2 = imgB_ravel[len(imgB_ravel)//2:]
+      
+        for i in range(len(imgB_ravel_2)):
+            if i > len(imgB_ravel_1)-1:
+                break
+            imgB_i_bit_1 = standerdize_length(to_bin(imgB_ravel_1[i]))
+            imgB_i_bit_2 = standerdize_length(to_bin(imgB_ravel_2[i]))
+
+            img_cr_ravel[i] = insert_img(img_cr_ravel[i], imgB_i_bit_1)
+            img_cb_ravel[i] = insert_img(img_cb_ravel[i], imgB_i_bit_2)
+
+        img_cr = img_cr_ravel.reshape(img_cr.shape)
+        img_cb = img_cb_ravel.reshape(img_cb.shape)
+
+        imgA[:, :, 1] = img_cr
+        imgA[:, :, 2] = img_cb
+
+        print(imgA.shape)
+        cv2.imwrite("weshHBIBI.png", imgA)
+
+        return imgA
+    
+img = encodage("test.jpg", "this is a security project why am i doing this, it's cool man!")
+
+img =  cv2.cvtColor(img, cv2.COLOR_YCrCb2RGB)
+cv2.imshow('the IMAGE', img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+
+
+"""    cv2.imshow('the IMAGE', imgA)
+    cv2.imshow('the message', imgB)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+"""
+
+
+""" liste_ = [1/4, 1/2, 3/4]
+    for elm  in liste:
+    imgA_zone_1 = imgA[:imgA.shape[0]/4, :imgA.shape[1]/4, :]
+    imgA_zone_2 = imgA[imgA.shape[0]/4:imgA.shape[0]/2, imgA.shape[1]/4:imgA.shape[1]/2, :]
+    imgA_zone_3 = imgA[imgA.shape[0]/2:3*imgA.shape[0]/4, imgA.shape[1]/2:3*imgA.shape[1]/4, :]
+    imgA_zone_4 = imgA[3*imgA.shape[0]/4:, 3*imgA.shape[1]/4:, :]"""
