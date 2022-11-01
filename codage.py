@@ -58,7 +58,8 @@ class Encode():
         for i in range(len_img_bit):
             if i>=(len_text-1)/2 :
                 break
-            img_ravel[i] = self.change_bits(img_ravel[i], text_bit[i*2], text_bit[i*2+1])
+            # i was making a mistake hnaya, kont j'ecrase i à chaque fois, douka fixed now
+            img_ravel[i] = self.change_bits(img_ravel[i], text_bit[i*2], text_bit[i*2+1]) 
 
         shape = (img_shapes,img_shapes, 3)
         img = img_ravel.reshape(shape)
@@ -78,6 +79,8 @@ class Encode():
         return shape[1]
     
     # put the size of the imgB into pixels of imgA
+
+    # la taille lazem tet7at fel -6 w -5, because lokhrin 9adrin yetbadlou
     def insert_taille(self, img_cr_ravel, taille):
         if taille <= 255:
             taille_bit = self.standerdize_length_8(self.to_bin(taille))
@@ -175,10 +178,11 @@ class Encode():
             print(self.standerdize_length_16(self.to_bin(img_cr.ravel()[0])))
             print(int("".join(something),2))"""
         #***************************************************************************
+        # Test la taille *****************************************************
         img_cr_ravel = img_cr.ravel()
         print(self.getTaille(img_cr_ravel))
         return imgA
-    
+        #*****************************************************
 
 
     def get_text_from_img(self, val):
