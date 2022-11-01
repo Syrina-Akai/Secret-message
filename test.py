@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-
+from builtins import int 
 
 EXT = "hello world, it's me Mariò"
 IMG_PATH = "tree.jpg"

@@ -5,9 +5,15 @@ from builtins import int
 
 
 class Encode():
-    def __init__(self, img, text= None):
+    def __init__(self, path, text= None):
         super(Encode, self).__init__()  
-        self.img = cv2.cvtColor(img, cv2.COLOR_RGB2YCrCb) 
+        if text is not None :
+            self.img = cv2.imread(path, cv2.IMREAD_COLOR)
+             
+        else:
+            self.img = cv2.imread(path, -1)
+
+        self.img = cv2.cvtColor(self.img, cv2.COLOR_RGB2YCrCb)
         self.text = text
         self.NB_BITS_8 = 8
         self.NB_BITS_16 = 16
@@ -168,8 +174,7 @@ class Encode():
         #***********************************************
 
         imgA = cv2.cvtColor(imgA, cv2.COLOR_YCrCb2RGB)
-        cv2.imwrite("weshHbibi.png", imgA)
-
+        
         return imgA
         #*****************************************************
 
@@ -237,50 +242,50 @@ class Encode():
         
         text = text_bit_1 + text_bit_2
 
-        return text
+        return self.work_with_bits(text)
 
 
 
-def BinaryToDecimal(binary):  
-    decimal, i=0,0
-    while(binary != 0):
-        dec = binary % 10
-        decimal = decimal + dec * pow(2, i)
-        binary = binary//10
-        i += 1
-    return (decimal)
+    def BinaryToDecimal(self, binary):  
+        decimal, i=0,0
+        while(binary != 0):
+            dec = binary % 10
+            decimal = decimal + dec * pow(2, i)
+            binary = binary//10
+            i += 1
+        return (decimal)
 
 
-def work_with_bits(text_bits_liste):
-    i=0
-    k=(i+1)*8
-    text_complet=""
-    str_data = ""
-    while k < len(text_bits_liste):
+    def work_with_bits(self, text_bits_liste):
+        i=0
         k=(i+1)*8
-        text_bits = text_bits_liste[i*8:k]
-        if text_bits!=[]:
-            if text_bits[0] == '0':
-                text_bits = text_bits[1:]
-            text_bits = ''.join(i for i in text_bits)
-            for j in range(0, len(text_bits), 7):
-                temp_data = int(text_bits[j:j + 7])
-                decimal_data = BinaryToDecimal(temp_data)
-                str_data = str_data + chr(decimal_data)
+        text_complet=""
+        str_data = ""
+        while k < len(text_bits_liste):
+            k=(i+1)*8
+            text_bits = text_bits_liste[i*8:k]
+            if text_bits!=[]:
+                if text_bits[0] == '0':
+                    text_bits = text_bits[1:]
+                text_bits = ''.join(i for i in text_bits)
+                for j in range(0, len(text_bits), 7):
+                    temp_data = int(text_bits[j:j + 7])
+                    decimal_data = self.BinaryToDecimal(temp_data)
+                    str_data = str_data + chr(decimal_data)
 
-        i=i+1
-        
-    text_complet +=str_data
-    return text_complet
+            i=i+1
+            
+        text_complet +=str_data
+        return text_complet
 
 
 
-img = cv2.imread('test.jpg', cv2.IMREAD_COLOR)
+"""img = cv2.imread('test.jpg', cv2.IMREAD_COLOR)
 img =  Encode(img, 'hollo je suis mario').encodeImge()
 
 img_code = cv2.imread("weshHbibi.png", -1)
 text = Encode(img_code).decodageImge()
 
-print(work_with_bits(text))
+print(text)"""
 
 
