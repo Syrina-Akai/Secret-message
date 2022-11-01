@@ -30,6 +30,7 @@ class Encode():
 
     # change bits of the image to add text
     def change_bits(self, value, bit1, bit2):
+        #print(bit1)
         value = self.standerdize_length_8(self.to_bin(value))
         value[-6] = bit1
         value[-5] = bit2
@@ -50,7 +51,8 @@ class Encode():
 
         text_bit = []
         for char in text:
-            text_bit += self.standerdize_length_8(self.to_bin(ord(char)))
+            print(self.to_bin(ord(char)))
+            text_bit += self.to_bin(ord(char))
         text_bit = np.array(text_bit + ['0']*self.NB_BITS_8)
 
         img_ravel = img.ravel()
@@ -235,59 +237,62 @@ class Encode():
         img_cr_ravel = img_cr.ravel()
         img_cb_ravel = img_cb.ravel()
         taille = self.getTaille(img_cr_ravel)
-        print(taille)
+        
         index = 4 if taille<=255 else 8
         text_bit_1 = []
         text_bit_2 = []
         i=0
         while i < taille//2:
             imgA_1 = self.standerdize_length_16(self.to_bin(img_cr_ravel[(i+index)*dispatch]))
-            imgA_1 = imgA_1[-8:]
             text_bit_1+=[imgA_1[-6],imgA_1[-5]] 
             imgA_2 = self.standerdize_length_16(self.to_bin(img_cb_ravel[i*dispatch]))
-            imgA_2 = imgA_2[-8:]
             text_bit_2+=[imgA_2[-6],imgA_2[-5]] 
             i+=1
 
         if taille%2!=0:
             imgA_2 = self.standerdize_length_16(self.to_bin(img_cb_ravel[i*dispatch]))
             text_bit_2+=[imgA_2[-6],imgA_2[-5]] 
-
+        
         text = text_bit_1 + text_bit_2
-        text = ''.join(i for i in text)    
-        print(text)    
+        text = ''.join(i for i in text)  
+        print(text)  
+  
         text = self.decode(text)
+        print(text)
         return text
 
 
-
-"""img = cv2.imread('test.jpg', cv2.IMREAD_COLOR)
-img =  Encode(img, 'hollo je suis mario').encodeImge()"""
-word = "hollo je suis mario"
-binary = []
-for char in word : 
-    binary = binary + list(bin(ord(char)).replace("0b", ""))
-str = ''.join(i for i in binary) 
-print(str)
-img = cv2.imread('weshHbibi.png', -1)
-print(img.dtype)
-
+img = cv2.imread('test.jpg', cv2.IMREAD_COLOR)
+img =  Encode(img, 'hollo je suis mario').encodeImge()
 text = Encode(img).decodageImge()
-print(text)
-#img = cv2.imread('weshHBIBI.png', cv2.IMREAD_COLOR)
 
+"""    
+
+    word = "hollo je suis mario"
+    binary = []
+    for char in word : 
+        binary = binary + list(bin(ord(char)).replace("0b", ""))
+    str = ''.join(i for i in binary) 
+    print(str)
+    img = cv2.imread('weshHbibi.png', -1)
+    print(img.dtype)
+    img =  Encode(img, 'hollo je suis mario').encodeImge()
+    text = Encode(img).decodageImge()
+    print(text)
+    #img = cv2.imread('weshHBIBI.png', cv2.IMREAD_COLOR)
+"""
 
 #print("Le text secret est : ", text)
 
 
 
 
-"""word = "hello"
+word = "hello"
 binary = []
 for char in word : 
     binary = binary + list(bin(ord(char)).replace("0b", ""))
 str = ''.join(i for i in binary) 
-
+#print(str)
 def BinaryToDecimal(binary):  
     decimal, i=0,0
     while(binary != 0):
@@ -298,12 +303,12 @@ def BinaryToDecimal(binary):
     return (decimal)
 
 str_data =' '
-bin_data =str
-print("bin data : ", bin_data)
+bin_data ='1001000110101010'
+#print("bin data : ", bin_data)
 for i in range(0, len(bin_data), 7):
     temp_data = int(bin_data[i:i + 7])
     decimal_data = BinaryToDecimal(temp_data)
     str_data = str_data + chr(decimal_data)
 
-print("The Binary value after string conversion is:",
-       str_data)"""
+print("The Binary value after string conversion is:",str_data)
+
