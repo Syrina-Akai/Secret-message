@@ -57,11 +57,27 @@ def insert_img(value_A, value_B):
     value_A[7:] = value_B
     return int("".join(value_A),2)
 
+
+"""    imgB = create_img_with_text("hello world, it's me Mariò")
+
+    print(imgB.ravel())
+    imgB=cv2.cvtColor(imgB, cv2.COLOR_RGB2YCrCb) 
+    imgB_cr = imgB[:,:,1]
+    print("iiiiii", imgB_cr.ravel())
+    imgB=cv2.cvtColor(imgB, cv2.COLOR_YCrCb2RGB) 
+    imgB=cv2.cvtColor(imgB, cv2.COLOR_RGB2YCrCb) 
+    imgB_cr = imgB[:,:,1]
+    print("aaaa", imgB_cr.ravel())
 """
-    imgA = cv2.imread('test.jpg', cv2.COLOR_BGR2YCrCb)
-    imgA=np.uint16(imgA)*255
-    imgB = create_img_with_text("hello world, it's me Mariò")
-""" 
+
+
+liste = [1,5,8,9,7,8,7,8, 9]
+liste_1 = liste[:len(liste)//2]
+liste_2= liste[len(liste)//2:]
+for i, j in zip(range(len(liste_1)), range(len(liste_2))):
+    print(liste_1[i], liste_2[j])
+
+
 def encodage(imgA_path, text):
 
     imgA = cv2.imread(imgA_path, cv2.COLOR_BGR2RGB)
@@ -97,9 +113,11 @@ def encodage(imgA_path, text):
                 break
             imgB_i_bit_1 = standerdize_length(to_bin(imgB_ravel_1[i]))
             imgB_i_bit_2 = standerdize_length(to_bin(imgB_ravel_2[i]))
+            img_cr_ravel[i*(len(imgB_ravel)+9)//2] = insert_img(img_cr_ravel[i], imgB_i_bit_1)
+            img_cb_ravel[i*(len(imgB_ravel)+9)//2] = insert_img(img_cb_ravel[i], imgB_i_bit_2)
 
-            img_cr_ravel[i] = insert_img(img_cr_ravel[i], imgB_i_bit_1)
-            img_cb_ravel[i] = insert_img(img_cb_ravel[i], imgB_i_bit_2)
+            """    img_cr_ravel[i] = insert_img(img_cr_ravel[i], imgB_i_bit_1)
+                img_cb_ravel[i] = insert_img(img_cb_ravel[i], imgB_i_bit_2)"""
 
         img_cr = img_cr_ravel.reshape(img_cr.shape)
         img_cb = img_cb_ravel.reshape(img_cb.shape)
@@ -112,13 +130,15 @@ def encodage(imgA_path, text):
 
         return imgA
     
-img = encodage("test.jpg", "this is a security project why am i doing this, it's cool man!")
+"""    img = encodage("test.jpg", "this is a security project why am i doing this, it's cool man!")
 
-img =  cv2.cvtColor(img, cv2.COLOR_YCrCb2RGB)
-cv2.imshow('the IMAGE', img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-
+    img =  cv2.cvtColor(img, cv2.COLOR_YCrCb2RGB)
+    img2 =  cv2.imread("test.jpg", cv2.IMREAD_COLOR)
+    cv2.imshow('the IMAGE', img)
+    cv2.imshow('the IMAGE_', img2)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+"""
 
 
 
