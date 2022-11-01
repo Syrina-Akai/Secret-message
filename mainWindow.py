@@ -4,7 +4,6 @@ import cv2
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-from pandas.api.types import is_numeric_dtype
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 
 #☺

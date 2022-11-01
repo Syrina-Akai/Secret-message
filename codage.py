@@ -179,8 +179,8 @@ class Encode():
             print(int("".join(something),2))"""
         #***************************************************************************
         # Test la taille *****************************************************
-        img_cr_ravel = img_cr.ravel()
-        print(self.getTaille(img_cr_ravel))
+        """    img_cr_ravel = img_cr.ravel()
+            print(self.getTaille(img_cr_ravel))"""
         return imgA
         #*****************************************************
 
@@ -241,8 +241,8 @@ class Encode():
         img_cr_ravel = img_cr.ravel()
         img_cb_ravel = img_cb.ravel()
         #print(img_cr_ravel)
-        taille = self.getTaille(img_cr_ravel[0])
-        #print("aaaaaaaaaaaaaaaaaaaaaaaa",taille)
+        taille = self.getTaille(img_cr_ravel)
+        print("aaaaaaaaaaaaaaaaaaaaaaaa",taille)
         #print(position)
         imgB_ravel_1 = [] #img_cr
         imgB_ravel_2 = [] #img_cb
@@ -261,9 +261,8 @@ class Encode():
 
 img = cv2.imread('test.jpg', cv2.IMREAD_COLOR)
 img =  Encode(img, 'hollo je suis mario').encodeImge()
-
-"""    text = Encode(img).decodageImge()
-    print(text)"""
+text = Encode(img).decodageImge()
+print(text)
 #img = cv2.imread('weshHBIBI.png', cv2.IMREAD_COLOR)
 
 
