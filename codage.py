@@ -30,7 +30,6 @@ class Encode():
 
     # change bits of the image to add text
     def change_bits(self, value, bit1, bit2):
-        #print(bit1)
         value = self.standerdize_length_8(self.to_bin(value))
         value[-6] = bit1
         value[-5] = bit2
@@ -51,9 +50,11 @@ class Encode():
 
         text_bit = []
         for char in text:
-            print(self.to_bin(ord(char)))
-            text_bit += self.to_bin(ord(char))
-        text_bit = np.array(text_bit + ['0']*self.NB_BITS_8)
+            text_bit += self.standerdize_length_8(self.to_bin(ord(char)))
+
+        text_bit = np.array(text_bit)
+        
+
 
         img_ravel = img.ravel()
         len_img_bit = len(img_ravel)
@@ -114,13 +115,6 @@ class Encode():
                 raise ValueError()
             imgB = self.create_img_with_text(self.text) 
 
-            # COnvert last 4 bits of mgA ro 0111***********
-            imgA_ravel = imgA.ravel()
-            for i in range(len(imgA_ravel)):
-                imgA_ravel_i= self.standerdize_length_8(self.to_bin(imgA_ravel[i]))
-                imgA_ravel_i[-4:] = ['0','1','1','1']
-                imgA_ravel[i] = int("".join(imgA_ravel_i),2)
-            imgA = imgA_ravel.reshape(imgA.shape)
             #*********************************************************
             
             # Use only cr cb ********************
@@ -159,42 +153,30 @@ class Encode():
             #**************************************************************************      
         img_cr = img_cr_ravel.reshape(img_cr.shape)
         img_cb = img_cb_ravel.reshape(img_cb.shape)
-
-        #test **********************************************************************
-        """    print(self.standerdize_length_16(self.to_bin(img_cr.ravel()[0])))
-            something  = self.standerdize_length_16(self.to_bin(img_cr.ravel()[0]))
-            print(int("".join(something),2))"""
-        #********************************************************************
-
         imgA[:, :, 1] = img_cr
         imgA[:, :, 2] = img_cb
 
+        
+        # THE PROBLEM WERE SYMPLY HERE, AU LIEU DE 16 KOUNA DAYRIN AGAIN 8 XD
+        # COnvert last 4 bits of mgA ro 0111***********
+        imgA_ravel = imgA.ravel()
+        for i in range(len(imgA_ravel)):
+            imgA_ravel_i= self.standerdize_length_16(self.to_bin(imgA_ravel[i]))
+            imgA_ravel_i[-4:] = ['0','1','1','1']
+            imgA_ravel[i] = int("".join(imgA_ravel_i),2)
+        imgA = imgA_ravel.reshape(imgA.shape)
+        #***********************************************
+
         imgA = cv2.cvtColor(imgA, cv2.COLOR_YCrCb2RGB)
         cv2.imwrite("weshHbibi.png", imgA)
-        """    cv2.imshow("hbibi_hadak.png", imgA)
-            cv2.imshow('the message', imgB)
-            cv2.waitKey(0)
-            cv2.destroyAllWindows()"""
 
-        #test **********************************************************************
-        """    imgA = cv2.cvtColor(imgA, cv2.COLOR_RGB2YCrCb)
-            img_cr = imgA[:, :, 1]"""
-        """    something  = self.standerdize_length_16(self.to_bin(img_cr.ravel()[0]))
-            print(self.standerdize_length_16(self.to_bin(img_cr.ravel()[0])))
-            print(int("".join(something),2))"""
-        #***************************************************************************
-        # Test la taille *****************************************************
-        """    img_cr_ravel = img_cr.ravel()
-            print(self.getTaille(img_cr_ravel))"""
         return imgA
         #*****************************************************
 
 
     def get_text_from_img(self, val):
-        #print(val)
         val = self.standerdize_length_8(self.to_bin(val))
         text = val [-7:]
-        #print(val)
         text_ = [text[-5], text[-6]]
         return text_
     
@@ -254,45 +236,11 @@ class Encode():
             text_bit_2+=[imgA_2[-6],imgA_2[-5]] 
         
         text = text_bit_1 + text_bit_2
-        text = ''.join(i for i in text)  
-        print(text)  
-  
-        text = self.decode(text)
-        print(text)
+
         return text
 
 
-img = cv2.imread('test.jpg', cv2.IMREAD_COLOR)
-img =  Encode(img, 'hollo je suis mario').encodeImge()
-text = Encode(img).decodageImge()
 
-"""    
-
-    word = "hollo je suis mario"
-    binary = []
-    for char in word : 
-        binary = binary + list(bin(ord(char)).replace("0b", ""))
-    str = ''.join(i for i in binary) 
-    print(str)
-    img = cv2.imread('weshHbibi.png', -1)
-    print(img.dtype)
-    img =  Encode(img, 'hollo je suis mario').encodeImge()
-    text = Encode(img).decodageImge()
-    print(text)
-    #img = cv2.imread('weshHBIBI.png', cv2.IMREAD_COLOR)
-"""
-
-#print("Le text secret est : ", text)
-
-
-
-
-word = "hello"
-binary = []
-for char in word : 
-    binary = binary + list(bin(ord(char)).replace("0b", ""))
-str = ''.join(i for i in binary) 
-#print(str)
 def BinaryToDecimal(binary):  
     decimal, i=0,0
     while(binary != 0):
@@ -302,13 +250,37 @@ def BinaryToDecimal(binary):
         i += 1
     return (decimal)
 
-str_data =' '
-bin_data ='1001000110101010'
-#print("bin data : ", bin_data)
-for i in range(0, len(bin_data), 7):
-    temp_data = int(bin_data[i:i + 7])
-    decimal_data = BinaryToDecimal(temp_data)
-    str_data = str_data + chr(decimal_data)
 
-print("The Binary value after string conversion is:",str_data)
+def work_with_bits(text_bits_liste):
+    i=0
+    k=(i+1)*8
+    text_complet=""
+    str_data = ""
+    while k < len(text_bits_liste):
+        k=(i+1)*8
+        text_bits = text_bits_liste[i*8:k]
+        if text_bits!=[]:
+            if text_bits[0] == '0':
+                text_bits = text_bits[1:]
+            text_bits = ''.join(i for i in text_bits)
+            for j in range(0, len(text_bits), 7):
+                temp_data = int(text_bits[j:j + 7])
+                decimal_data = BinaryToDecimal(temp_data)
+                str_data = str_data + chr(decimal_data)
+
+        i=i+1
+        
+    text_complet +=str_data
+    return text_complet
+
+
+
+img = cv2.imread('test.jpg', cv2.IMREAD_COLOR)
+img =  Encode(img, 'hollo je suis mario').encodeImge()
+
+img_code = cv2.imread("weshHbibi.png", -1)
+text = Encode(img_code).decodageImge()
+
+print(work_with_bits(text))
+
 
