@@ -1,6 +1,8 @@
 import math
 import cv2
 import numpy as np
+from builtins import int
+
 
 class Encode():
     def __init__(self, img, text= None):
@@ -12,7 +14,6 @@ class Encode():
     
     # Transform a text into a list of binary numbers
     def to_bin(self, n):
-        
         return list(bin(n).replace("0b", ""))
 
     # Standarize the length of a binary number into 8bits
@@ -168,7 +169,6 @@ class Encode():
 
         imgA = cv2.cvtColor(imgA, cv2.COLOR_YCrCb2RGB)
         cv2.imwrite("weshHbibi.png", imgA)
-        print("AAAAAAAAAAAAAAAAAAA", imgA.dtype)
         """    cv2.imshow("hbibi_hadak.png", imgA)
             cv2.imshow('the message', imgB)
             cv2.waitKey(0)
@@ -197,14 +197,6 @@ class Encode():
         return text_
     
     def getTaille(self, img_cr_ravel):
-        
-        """    if taille <= 255:
-                taille_bit = self.standerdize_length_8(self.to_bin(taille))
-                ranging = 4
-            else:
-                taille_bit = self.standerdize_length_16(self.to_bin(taille))
-                ranging = 8"""
-
         taille_bit = ['0']*8
         for i in range(4):
             imgA_cr_i_bit =  self.standerdize_length_16(self.to_bin(img_cr_ravel[i]))
@@ -217,9 +209,8 @@ class Encode():
         return taille
 
 
-    def BinaryToDecimal(self, binary): 
-        binary = ''.join(i for i in binary)  
-        decimal, i
+    def BinaryToDecimal(self, binary):   
+        decimal, i = 0,0
         while(binary != 0):
             dec = binary % 10
             decimal = decimal + dec * pow(2, i)
@@ -228,12 +219,13 @@ class Encode():
         return (decimal)
     
     def decode(self, bin_data):
+        str_data = ' '
         for i in range(0, len(bin_data), 7):
             temp_data = int(bin_data[i:i + 7])
-        decimal_data = self.BinaryToDecimal(temp_data)
-        str_data = str_data + chr(decimal_data)
+            decimal_data = self.BinaryToDecimal(temp_data)
+            str_data = str_data + chr(decimal_data)
         return str_data
-    
+
 
     def decodageImge(self):
         imgA = self.img
@@ -241,22 +233,42 @@ class Encode():
         img_cr = imgA[:, :, 1]
         img_cb = imgA[:, :, 2]
         img_cr_ravel = img_cr.ravel()
-        print(img_cr_ravel.dtype)
         img_cb_ravel = img_cb.ravel()
         taille = self.getTaille(img_cr_ravel)
-        index = 4 if taille<=255 else 8
-        imgB = ['0']*taille
-        imgB_1 = imgB[:taille//2]
-        imgB_2 = imgB[taille//2:]
-        i=0
         print(taille)
+        index = 4 if taille<=255 else 8
+        text_bit_1 = []
+        text_bit_2 = []
+        i=0
+        while i < taille//2:
+            imgA_1 = self.standerdize_length_16(self.to_bin(img_cr_ravel[(i+index)*dispatch]))
+            imgA_1 = imgA_1[-8:]
+            text_bit_1+=[imgA_1[-6],imgA_1[-5]] 
+            imgA_2 = self.standerdize_length_16(self.to_bin(img_cb_ravel[i*dispatch]))
+            imgA_2 = imgA_2[-8:]
+            text_bit_2+=[imgA_2[-6],imgA_2[-5]] 
+            i+=1
+
+        if taille%2!=0:
+            imgA_2 = self.standerdize_length_16(self.to_bin(img_cb_ravel[i*dispatch]))
+            text_bit_2+=[imgA_2[-6],imgA_2[-5]] 
+
+        text = text_bit_1 + text_bit_2
+        text = ''.join(i for i in text)    
+        print(text)    
+        text = self.decode(text)
+        return text
 
 
 
-img = cv2.imread('test.jpg', cv2.IMREAD_COLOR)
-img =  Encode(img, 'hollo je suis mario').encodeImge()
-
-print(img.dtype)
+"""img = cv2.imread('test.jpg', cv2.IMREAD_COLOR)
+img =  Encode(img, 'hollo je suis mario').encodeImge()"""
+word = "hollo je suis mario"
+binary = []
+for char in word : 
+    binary = binary + list(bin(ord(char)).replace("0b", ""))
+str = ''.join(i for i in binary) 
+print(str)
 img = cv2.imread('weshHbibi.png', -1)
 print(img.dtype)
 
@@ -277,7 +289,7 @@ for char in word :
 str = ''.join(i for i in binary) 
 
 def BinaryToDecimal(binary):  
-    decimal, i
+    decimal, i=0,0
     while(binary != 0):
         dec = binary % 10
         decimal = decimal + dec * pow(2, i)
