@@ -165,15 +165,18 @@ class Encode():
 
         imgA[:, :, 1] = img_cr
         imgA[:, :, 2] = img_cb
+
         imgA = cv2.cvtColor(imgA, cv2.COLOR_YCrCb2RGB)
+        cv2.imwrite("weshHbibi.png", imgA)
+        print("AAAAAAAAAAAAAAAAAAA", imgA.dtype)
         """    cv2.imshow("hbibi_hadak.png", imgA)
             cv2.imshow('the message', imgB)
             cv2.waitKey(0)
             cv2.destroyAllWindows()"""
 
         #test **********************************************************************
-        imgA = cv2.cvtColor(imgA, cv2.COLOR_RGB2YCrCb)
-        img_cr = imgA[:, :, 1]
+        """    imgA = cv2.cvtColor(imgA, cv2.COLOR_RGB2YCrCb)
+            img_cr = imgA[:, :, 1]"""
         """    something  = self.standerdize_length_16(self.to_bin(img_cr.ravel()[0]))
             print(self.standerdize_length_16(self.to_bin(img_cr.ravel()[0])))
             print(int("".join(something),2))"""
@@ -234,33 +237,29 @@ class Encode():
 
     def decodageImge(self):
         imgA = self.img
-        text=""
-        position = abs(self.get_0(imgA.shape))
+        dispatch = abs(self.get_dispatch(imgA.shape))
         img_cr = imgA[:, :, 1]
         img_cb = imgA[:, :, 2]
         img_cr_ravel = img_cr.ravel()
+        print(img_cr_ravel.dtype)
         img_cb_ravel = img_cb.ravel()
-        #print(img_cr_ravel)
         taille = self.getTaille(img_cr_ravel)
-        print("aaaaaaaaaaaaaaaaaaaaaaaa",taille)
-        #print(position)
-        imgB_ravel_1 = [] #img_cr
-        imgB_ravel_2 = [] #img_cb
-
-        for i in range(taille//2) :
-            imgB_ravel_1 +=self.get_text_from_img(img_cr_ravel[(i+1)*position])
-            imgB_ravel_2 +=self.get_text_from_img(img_cb_ravel[(i)*position])
-
-        text = imgB_ravel_1+imgB_ravel_2
-        #print(text)
-        text = self.decode(text)    
-
-        return text
+        index = 4 if taille<=255 else 8
+        imgB = ['0']*taille
+        imgB_1 = imgB[:taille//2]
+        imgB_2 = imgB[taille//2:]
+        i=0
+        print(taille)
 
 
 
 img = cv2.imread('test.jpg', cv2.IMREAD_COLOR)
 img =  Encode(img, 'hollo je suis mario').encodeImge()
+
+print(img.dtype)
+img = cv2.imread('weshHbibi.png', -1)
+print(img.dtype)
+
 text = Encode(img).decodageImge()
 print(text)
 #img = cv2.imread('weshHBIBI.png', cv2.IMREAD_COLOR)
