@@ -8,6 +8,8 @@ class Encode():
         super(Encode, self).__init__()  
         if text is not None :
             self.img = cv2.imread(path, cv2.IMREAD_COLOR)
+            if self.img.shape[0]>1080 and self.img.shape[1]>1080 :
+                self.img = cv2.resize(self.img,dsize=None,fx = 0.15, fy = 0.15)
              
         else:
             self.img = cv2.imread(path, -1)
@@ -139,6 +141,7 @@ class Encode():
             dispatch = abs(self.get_dispatch(imgA.shape))
 
             i=0
+            print("on va faire l'encodage avec imgB")
             while i < len(imgB_ravel_1):
                 imgB_i_bit_1 = self.standerdize_length_8(self.to_bin(imgB_ravel_1[i]))
                 imgB_i_bit_2 = self.standerdize_length_8(self.to_bin(imgB_ravel_2[i]))
@@ -154,24 +157,27 @@ class Encode():
             if len(imgB_ravel_1) <len(imgB_ravel_2):
                 img_cb_ravel[i*dispatch] = self.insert_img(img_cb_ravel[i*dispatch], imgB_i_bit_2)
             #**************************************************************************      
+            print("encodage done !")
         img_cr = img_cr_ravel.reshape(img_cr.shape)
         img_cb = img_cb_ravel.reshape(img_cb.shape)
         imgA[:, :, 1] = img_cr
         imgA[:, :, 2] = img_cb
-
+        print("on a recupere imgA kima kant")
         
         # THE PROBLEM WERE SYMPLY HERE, AU LIEU DE 16 KOUNA DAYRIN AGAIN 8 XD
         # COnvert last 4 bits of mgA ro 0111***********
         imgA_ravel = imgA.ravel()
+        print("rayhin ndirou 0111 ",len(imgA_ravel) )
         for i in range(len(imgA_ravel)):
             imgA_ravel_i= self.standerdize_length_16(self.to_bin(imgA_ravel[i]))
             imgA_ravel_i[-4:] = ['0','1','1','1']
             imgA_ravel[i] = int("".join(imgA_ravel_i),2)
         imgA = imgA_ravel.reshape(imgA.shape)
+        print("derna 0111")
         #***********************************************
 
         imgA = cv2.cvtColor(imgA, cv2.COLOR_YCrCb2RGB)
-        
+        print("on retourne...")
         return imgA
         #*****************************************************
 

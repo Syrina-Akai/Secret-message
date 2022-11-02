@@ -26,7 +26,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="encodage">
     <attribute name="title">
@@ -35,11 +35,16 @@
     <widget class="QTextEdit" name="secretText_encodage">
      <property name="geometry">
       <rect>
-       <x>410</x>
+       <x>400</x>
        <y>30</y>
        <width>311</width>
-       <height>81</height>
+       <height>71</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
      </property>
      <property name="placeholderText">
       <string>Entrer votre texte secret</string>
@@ -48,9 +53,9 @@
     <widget class="QWidget" name="verticalLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>280</x>
+       <x>260</x>
        <y>130</y>
-       <width>571</width>
+       <width>611</width>
        <height>411</height>
       </rect>
      </property>
@@ -383,11 +388,16 @@ QPushButton:focus {
     <widget class="QTextEdit" name="secretText_decodage">
      <property name="geometry">
       <rect>
-       <x>410</x>
+       <x>420</x>
        <y>440</y>
        <width>311</width>
-       <height>81</height>
+       <height>71</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
      </property>
      <property name="readOnly">
       <bool>true</bool>

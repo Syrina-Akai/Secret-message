@@ -36,13 +36,16 @@ class Ui(QtWidgets.QMainWindow):
         self.plot_img_encodage = self.findChild(QtWidgets.QVBoxLayout,"plot_img_encodage")
         self.image_frame_encodage = QtWidgets.QLabel()
         self.plot_img_encodage.addWidget(self.image_frame_encodage)
-        
+        self.img_encodage = cv2.imread("no_image.jpg", cv2.IMREAD_COLOR)
+        self.getPlot('encodage')
 
         #the plot img decodage
         self.plot_img_decodage = self.findChild(QtWidgets.QVBoxLayout,"plot_img_decodage")
         self.image_frame_decodage = QtWidgets.QLabel()
         self.plot_img_decodage.addWidget(self.image_frame_decodage)
-        
+        self.img_decodage = cv2.imread("no_image.jpg", cv2.IMREAD_COLOR)
+        self.getPlot('decodage')
+
         #text secret encodage
         self.secretText_encodage = self.findChild(QtWidgets.QTextEdit, "secretText_encodage")
 
@@ -55,13 +58,13 @@ class Ui(QtWidgets.QMainWindow):
     def upload_data_encodage(self):
         
         dialog = QtWidgets.QFileDialog()
-        fname = dialog.getOpenFileName(None, "Import file", filter="JPG(*.jpg);;PNG(*.png)")
+        fname = dialog.getOpenFileName(None, "Import image", filter="JPG(*.jpg);;PNG(*.png)")
         if fname[0]!="":
             self.getData_encodage(fname[0])
 
     def upload_data_decodage(self):
         dialog = QtWidgets.QFileDialog()
-        fname = dialog.getOpenFileName(None, "Import file", filter="JPG(*.jpg);;PNG(*.png)")
+        fname = dialog.getOpenFileName(None, "Import image", filter="JPG(*.jpg);;PNG(*.png)")
         if fname[0]!="":
             self.getData_decodage(fname[0])
 
@@ -98,7 +101,7 @@ class Ui(QtWidgets.QMainWindow):
 #***************************************************SAVE IMAGE**************************************************** 
     def enregistrer_img(self):
         dialog = QtWidgets.QFileDialog()
-        name = dialog.getSaveFileName(self,"Save File","",filter="PNG(*.png)")
+        name = dialog.getSaveFileName(self,"Save image","",filter="PNG(*.png)")
         if(name[0]!=''):	    
             cv2.imwrite(name[0], self.img_encodage)
             print("image saved.")
@@ -126,6 +129,7 @@ class Ui(QtWidgets.QMainWindow):
         encode = Encode(self.img_encode_path, text)
         if text != '' and len(text)+8<self.img_encodage.shape[0] :
             self.img_encodage =  encode.encodeImge()
+            print("codage done.")
             self.secretText_encodage.setPlainText('')
             self.btn_enregistrer.show()
             
