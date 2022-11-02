@@ -1,4 +1,3 @@
-import math
 import cv2
 import numpy as np
 from builtins import int
@@ -60,8 +59,6 @@ class Encode():
 
         text_bit = np.array(text_bit)
         
-
-
         img_ravel = img.ravel()
         len_img_bit = len(img_ravel)
         len_text = len(text_bit)
@@ -245,7 +242,6 @@ class Encode():
         return self.work_with_bits(text)
 
 
-
     def BinaryToDecimal(self, binary):  
         decimal, i=0,0
         while(binary != 0):
@@ -277,15 +273,3 @@ class Encode():
             
         text_complet +=str_data
         return text_complet
-
-
-
-"""img = cv2.imread('test.jpg', cv2.IMREAD_COLOR)
-img =  Encode(img, 'hollo je suis mario').encodeImge()
-
-img_code = cv2.imread("weshHbibi.png", -1)
-text = Encode(img_code).decodageImge()
-
-print(text)"""
-
-

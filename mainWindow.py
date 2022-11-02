@@ -1,9 +1,5 @@
 import sys
-import numpy as np
 import cv2, imutils
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from codage import Encode
 
