@@ -9,8 +9,7 @@ class Encode():
         if text is not None :
             self.img = cv2.imread(path, cv2.IMREAD_COLOR)
             if self.img.shape[0]>1080 and self.img.shape[1]>1080 :
-                self.img = cv2.resize(self.img,dsize=None,fx = 0.15, fy = 0.15)
-             
+                self.img = cv2.resize(self.img,dsize=None,fx = 0.15, fy = 0.15) 
         else:
             self.img = cv2.imread(path, -1)
 
@@ -74,8 +73,7 @@ class Encode():
         img = img_ravel.reshape(shape)
 
         return img
-    
-
+  
     # insert an image into another image
     def insert_img(self, value_A, value_B):
         value_A = self.standerdize_length_16(self.to_bin(value_A))
@@ -84,32 +82,38 @@ class Encode():
     
     # function de dispersion
     def get_dispatch(self, shape):
-        #return int(math.log2((shape[1]**2 )- 1) - (shape[1]-1) + shape[0]) 
         return shape[1]
     
     # put the size of the imgB into pixels of imgA
-
-    # la taille lazem tet7at fel -6 w -5, because lokhrin 9adrin yetbadlou
     def insert_taille(self, img_cr_ravel, taille):
         if taille <= 255:
+            img_cr_ravel = self.insert_bool(img_cr_ravel, '0')
             taille_bit = self.standerdize_length_8(self.to_bin(taille))
             ranging = 4
         else:
+            img_cr_ravel = self.insert_bool(img_cr_ravel, '1')
             taille_bit = self.standerdize_length_16(self.to_bin(taille))
             ranging = 8
 
         for i in range(ranging):
-            imgA_cr_i_bit =  self.standerdize_length_16(self.to_bin(img_cr_ravel[i]))
+            imgA_cr_i_bit =  self.standerdize_length_16(self.to_bin(img_cr_ravel[i+1]))
             imgA_cr_i_bit[-6] = taille_bit[i*2]
             imgA_cr_i_bit[-5] = taille_bit[2*i+1]
-            img_cr_ravel[i] =  int("".join(imgA_cr_i_bit),2)
+            img_cr_ravel[i+1] =  int("".join(imgA_cr_i_bit),2)
 
         return img_cr_ravel
     
+    # insert boolean value into the image
+    def insert_bool(self, img_cr_ravel, bool):
+        imgA_cr_i_bit =  self.standerdize_length_16(self.to_bin(img_cr_ravel[0]))
+        imgA_cr_i_bit[-6] = bool
+        img_cr_ravel[0] =  int("".join(imgA_cr_i_bit),2)
 
+        return img_cr_ravel
+    
     def encodeImge(self):        
         imgA = self.img
-
+        imgA_coded = imgA.copy()
         len_text = len(self.text)
         len_img = imgA.shape[0]*imgA.shape[1] *4
         if len_text> len_img: raise ValueError()
@@ -147,52 +151,60 @@ class Encode():
                 imgB_i_bit_2 = self.standerdize_length_8(self.to_bin(imgB_ravel_2[i]))
    
                 if len(imgB_ravel) <= 255:
-                     img_cr_ravel[(i+4)*dispatch] = self.insert_img(img_cr_ravel[(i+4)*dispatch], imgB_i_bit_1)
+                     
+                     img_cr_ravel[(i+5)*dispatch] = self.insert_img(img_cr_ravel[(i+5)*dispatch], imgB_i_bit_1)
                 else:
-                     img_cr_ravel[(i+8)*dispatch] = self.insert_img(img_cr_ravel[(i+8)*dispatch], imgB_i_bit_1)
-                
-                img_cb_ravel[i*dispatch] = self.insert_img(img_cb_ravel[i*dispatch], imgB_i_bit_2)
+                    try:
+                        img_cr_ravel[(i+9)*dispatch] = self.insert_img(img_cr_ravel[(i+9)*dispatch], imgB_i_bit_1)
+                        img_cb_ravel[i*dispatch] = self.insert_img(img_cb_ravel[i*dispatch], imgB_i_bit_2)
+                    except IndexError as e:
+                        print("The image is too small to contain the text")
+                        imgA_coded = None
                 i+=1
 
             if len(imgB_ravel_1) <len(imgB_ravel_2):
-                img_cb_ravel[i*dispatch] = self.insert_img(img_cb_ravel[i*dispatch], imgB_i_bit_2)
+                try:
+                    img_cb_ravel[i*dispatch] = self.insert_img(img_cb_ravel[i*dispatch], imgB_i_bit_2)
+                except IndexError as e:
+                    print("The image is too small to contain the text")
+                    imgA_coded = None
             #**************************************************************************      
-            print("encodage done !")
+
         img_cr = img_cr_ravel.reshape(img_cr.shape)
         img_cb = img_cb_ravel.reshape(img_cb.shape)
         imgA[:, :, 1] = img_cr
         imgA[:, :, 2] = img_cb
-        print("on a recupere imgA kima kant")
         
         # THE PROBLEM WERE SYMPLY HERE, AU LIEU DE 16 KOUNA DAYRIN AGAIN 8 XD
         # COnvert last 4 bits of mgA ro 0111***********
         imgA_ravel = imgA.ravel()
-        print("rayhin ndirou 0111 ",len(imgA_ravel) )
+
         for i in range(len(imgA_ravel)):
             imgA_ravel_i= self.standerdize_length_16(self.to_bin(imgA_ravel[i]))
             imgA_ravel_i[-4:] = ['0','1','1','1']
             imgA_ravel[i] = int("".join(imgA_ravel_i),2)
         imgA = imgA_ravel.reshape(imgA.shape)
-        print("derna 0111")
-        #***********************************************
 
+        #***********************************************
         imgA = cv2.cvtColor(imgA, cv2.COLOR_YCrCb2RGB)
-        print("on retourne...")
+
+        
+        if imgA_coded == None: return None
         return imgA
         #*****************************************************
-
-
-    def get_text_from_img(self, val):
-        val = self.standerdize_length_8(self.to_bin(val))
-        text = val [-7:]
-        text_ = [text[-5], text[-6]]
-        return text_
     
     def getTaille(self, img_cr_ravel):
-        taille_bit = ['0']*8
-        for i in range(4):
-            imgA_cr_i_bit =  self.standerdize_length_16(self.to_bin(img_cr_ravel[i]))
-            
+
+        imgA_cr_0_bit =  self.standerdize_length_16(self.to_bin(img_cr_ravel[0]))
+        if imgA_cr_0_bit[-6] == '0':
+            taille_bit = ['0']*8
+            ranging = 4
+        elif imgA_cr_0_bit[-6] == '1':
+            taille_bit = ['0']*16
+            ranging = 8
+
+        for i in range(ranging):
+            imgA_cr_i_bit =  self.standerdize_length_16(self.to_bin(img_cr_ravel[i+1]))
             taille_bit[i*2] = imgA_cr_i_bit[-6]
             taille_bit[2*i+1]= imgA_cr_i_bit[-5]
 
@@ -228,7 +240,7 @@ class Encode():
         img_cb_ravel = img_cb.ravel()
         taille = self.getTaille(img_cr_ravel)
         
-        index = 4 if taille<=255 else 8
+        index = 5 if taille<=255 else 9
         text_bit_1 = []
         text_bit_2 = []
         i=0

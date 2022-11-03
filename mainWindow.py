@@ -102,8 +102,9 @@ class Ui(QtWidgets.QMainWindow):
     def enregistrer_img(self):
         dialog = QtWidgets.QFileDialog()
         name = dialog.getSaveFileName(self,"Save image","",filter="PNG(*.png)")
-        if(name[0]!=''):	    
-            cv2.imwrite(name[0], self.img_encodage)
+        if(name[0]!=''):	
+            print(name)    
+            cv2.imwrite(name[0]+'.png', self.img_encodage)
             print("image saved.")
             self.btn_enregistrer.hide()
 
@@ -125,13 +126,13 @@ class Ui(QtWidgets.QMainWindow):
 #***************************************************CODE IMAGE**************************************************** 
     def codage_function(self):
         text = self.secretText_encodage.toPlainText()
-        
         encode = Encode(self.img_encode_path, text)
         if text != '' and len(text)+8<self.img_encodage.shape[0] :
             self.img_encodage =  encode.encodeImge()
-            print("codage done.")
-            self.secretText_encodage.setPlainText('')
-            self.btn_enregistrer.show()
+            if self.img_encodage!= None:
+                print("codage done.")
+                self.secretText_encodage.setPlainText('')
+                self.btn_enregistrer.show()
             
 #***************************************************DECODE IMAGE**************************************************** 
     def decodage_function(self):

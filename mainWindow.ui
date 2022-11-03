@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1023</width>
-    <height>683</height>
+    <width>1003</width>
+    <height>641</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,7 @@
     <rect>
      <x>50</x>
      <y>40</y>
-     <width>911</width>
+     <width>921</width>
      <height>591</height>
     </rect>
    </property>
@@ -35,8 +35,8 @@
     <widget class="QTextEdit" name="secretText_encodage">
      <property name="geometry">
       <rect>
-       <x>400</x>
-       <y>30</y>
+       <x>260</x>
+       <y>20</y>
        <width>311</width>
        <height>71</height>
       </rect>
@@ -54,7 +54,7 @@
      <property name="geometry">
       <rect>
        <x>260</x>
-       <y>130</y>
+       <y>100</y>
        <width>611</width>
        <height>411</height>
       </rect>
@@ -74,6 +74,7 @@
       <font>
        <family>Segoe UI</family>
        <pointsize>-1</pointsize>
+       <weight>50</weight>
        <bold>false</bold>
        <underline>false</underline>
        <strikeout>false</strikeout>
@@ -131,10 +132,10 @@ QPushButton:focus {
     <widget class="QPushButton" name="btn_encodage">
      <property name="geometry">
       <rect>
-       <x>50</x>
-       <y>360</y>
-       <width>171</width>
-       <height>51</height>
+       <x>600</x>
+       <y>20</y>
+       <width>111</width>
+       <height>41</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -189,8 +190,8 @@ QPushButton:focus {
     <widget class="QPushButton" name="btn_enregistrer">
      <property name="geometry">
       <rect>
-       <x>50</x>
-       <y>428</y>
+       <x>40</x>
+       <y>90</y>
        <width>171</width>
        <height>51</height>
       </rect>
@@ -262,6 +263,7 @@ QPushButton:focus {
       <font>
        <family>Segoe UI</family>
        <pointsize>-1</pointsize>
+       <weight>50</weight>
        <bold>false</bold>
        <underline>false</underline>
        <strikeout>false</strikeout>
@@ -330,10 +332,10 @@ QPushButton:focus {
     <widget class="QPushButton" name="btn_decodage">
      <property name="geometry">
       <rect>
-       <x>50</x>
-       <y>390</y>
-       <width>171</width>
-       <height>51</height>
+       <x>260</x>
+       <y>440</y>
+       <width>151</width>
+       <height>41</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -388,9 +390,9 @@ QPushButton:focus {
     <widget class="QTextEdit" name="secretText_decodage">
      <property name="geometry">
       <rect>
-       <x>420</x>
-       <y>440</y>
-       <width>311</width>
+       <x>440</x>
+       <y>430</y>
+       <width>271</width>
        <height>71</height>
       </rect>
      </property>
