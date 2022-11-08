@@ -138,8 +138,9 @@ class Ui(QtWidgets.QMainWindow):
 #***************************************************CODE TEXT*****************************************************
 
     def code_text(self):
+        print("salutttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt")
         text = self.secretText_encodage.toPlainText()
-        print(text)
+        
         if text != '':
             print("on va faire le codage du text")
             encodage = Encode(text = text)
@@ -152,11 +153,13 @@ class Ui(QtWidgets.QMainWindow):
 
 #***************************************************CODE IMAGE**************************************************** 
     def codage_function(self):
+        print("im here")
         if self.img_encode_path is not None :
             encode = Encode(self.img_encode_path)
             if len(self.img_text.ravel())+9 < len(self.img_encodage.ravel()) :
                 self.img_encodage =  encode.insert_into_image(self.img_text)
-                if self.img_encodage!= None:
+                print(self.img_encodage)
+                if self.img_encodage!= []:
                     print("codage done.")
                     self.secretText_encodage.setPlainText('')
                     self.btn_enregistrer.show()

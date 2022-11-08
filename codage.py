@@ -19,7 +19,6 @@ class Encode():
         self.NB_BITS_20 = 20
         self.NB_BITS_16 = 16
         self.NB_BITS_8 = 8
-    
 
 
 
