@@ -2,30 +2,37 @@ import cv2
 import numpy as np
 
 class Encode():
-    def __init__(self, path, text= None):
+    def __init__(self, path=None, text= None):
         super(Encode, self).__init__()  
-        if text is not None :
-            self.img = cv2.imread(path, cv2.IMREAD_COLOR)
-            if self.img.shape[0]>1080 and self.img.shape[1]>1080 :
-                self.img = cv2.resize(self.img,dsize=None,fx = 0.15, fy = 0.15) 
-        else:
-            self.img = cv2.imread(path, -1)
+        if path is None : #cas de codage du texte
+            self.img = None
+        elif path is not None: #cas ou il y a l'imgA
+            if text is not None : #cas ou on va coder l'imgA à partir de l'imgB
+                self.img = cv2.imread(path, cv2.IMREAD_COLOR)
+                if self.img.shape[0]>1080 and self.img.shape[1]>1080 :
+                    self.img = cv2.resize(self.img,dsize=None,fx = 0.15, fy = 0.15)
+            else : #cas de décodage de l'imgA
+                self.img = cv2.imread(path, -1)
 
-        self.img = cv2.cvtColor(self.img, cv2.COLOR_RGB2YCrCb)
+            self.img = cv2.cvtColor(self.img, cv2.COLOR_RGB2YCrCb)
         self.text = text
         self.NB_BITS_20 = 20
         self.NB_BITS_16 = 16
         self.NB_BITS_8 = 8
     
+
+
+
     def splitTextToTriplet(self, string):
         words = string.split()
         grouped_words = [' '.join(words[i: i + 7]) for i in range(0, len(words), 7)]
         return grouped_words
     
-    def convert_text_img(self, text_):
-        len_txt = len(text_)
+    def convert_text_img(self):
+        print("dkhelna converti text")
+        len_txt = len(self.text)
         print(len_txt)
-        groupe_text = self.splitTextToTriplet(text_)
+        groupe_text = self.splitTextToTriplet(self.text)
         
         img1 = np.zeros((24*len(groupe_text), 60*7, 3), dtype = np.uint8)
         y_start = 15
@@ -35,8 +42,11 @@ class Encode():
             y = y_start + i*y_increment
             cv2.putText(img=img1, text=line, org=(0, y), fontFace=cv2.FONT_HERSHEY_DUPLEX, fontScale=0.5, color=(255,255,0), 
             thickness=1)
+
+        print("on a terminer le codage du text..........")
         
         return img1
+
     # Transform a text into a list of binary numbers
     def to_bin(self, n):
         return list(bin(n).replace("0b", ""))
@@ -97,9 +107,9 @@ class Encode():
 
         return base, index
 
-    def insert_into_image(self, imgB, imgA):
+    def insert_into_image(self, imgB):
         imgB_ravel = imgB.ravel()
-
+        imgA = self.img
         if imgA.dtype == 'uint8':
             imgA=np.uint16(imgA)*255
         elif imgA.dtype != 'uint16':
@@ -141,6 +151,7 @@ class Encode():
             imgA_ravel_i[-4:] = ['0','1','1','1']
             imgA_ravel[i] = int("".join(imgA_ravel_i),2)
         imgA = imgA_ravel.reshape(imgA.shape)
+        imgA = cv2.cvtColor(imgA, cv2.COLOR_YCrCb2RGB)
         return imgA
 
     def getTaille(self, img_cr_ravel):
@@ -174,7 +185,8 @@ class Encode():
         pixel = int("".join(pixel_bit),2)
         return pixel, index
 
-    def get_from_img(self, imgA):
+    def get_from_img(self):
+        imgA = self.img
         #getting cr & cb
         img_cr = imgA[:, :, 1]
         img_cb = imgA[:, :, 2]
@@ -200,7 +212,7 @@ class Encode():
             img_cb_ravel, _ = self.get_pixel(img_cb_ravel, i)
 
         imgB_ravel = imgB_ravel_1 + imgB_ravel_2
-        shape = [int(taille_imgB_ravel/(60*7 *3)), int(50*7), 3]
+        shape = [int(taille_imgB_ravel/(60*7 *3)), int(60*7), 3]
         print(shape)
         imgB = np.asarray(imgB_ravel, dtype = np.uint8)
         imgB = imgB.reshape(shape)
