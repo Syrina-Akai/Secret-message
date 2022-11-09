@@ -188,10 +188,11 @@ class Encode():
 
         #getting size of imgB_ravel
         taille_imgB_ravel = self.getTaille(img_cr_ravel)
-        index = 5 if taille_imgB_ravel <= 255 else 9 
+        index = 9 if taille_imgB_ravel <=2**16 else 11
         imgB_ravel_1 = []
         imgB_ravel_2 = []
         i = 0
+        print("jebna la taille c bon...")
 
         while(i<taille_imgB_ravel//2):
 
@@ -200,7 +201,8 @@ class Encode():
             imgB_ravel_1.append(imgB_bit_1)
             imgB_ravel_2.append(imgB_bit_2)
             i+=1
-        
+        print("jebna ravels")
+
         if len(imgB_ravel_1) <len(imgB_ravel_2):
             img_cb_ravel, _ = self.get_pixel(img_cb_ravel, i)
 

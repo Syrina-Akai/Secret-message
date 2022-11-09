@@ -117,7 +117,7 @@ class Ui(QtWidgets.QMainWindow):
         dialog = QtWidgets.QFileDialog()
         name = dialog.getSaveFileName(self,"Save image","",filter="PNG(*.png)")
         if(name[0]!=''):	
-            cv2.imwrite(name[0]+".png", self.img_encodage)
+            cv2.imwrite(name[0], self.img_encodage)
             print("image saved.")
             self.btn_enregistrer.hide()
 
@@ -161,7 +161,7 @@ class Ui(QtWidgets.QMainWindow):
                 retval = msg.exec_()
             else :
                 encode = Encode(self.img_encode_path)
-                if len(self.img_text.ravel())+9 < len(self.img_encodage.ravel()) :
+                if (len(self.img_text.ravel())*8/4)+9 < len(self.img_encodage.ravel()) :
                     self.img_encodage =  encode.insert_into_image(self.img_text)
                     if self.img_encodage.size != 0 :
                         self.secretText_encodage.setPlainText('')
