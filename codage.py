@@ -22,11 +22,13 @@ class Encode():
 
 
 
+    # diviser le text donné en entré par ligne contenant chacune maximum 7 mots 
     def splitTextToTriplet(self, string):
         words = string.split()
         grouped_words = [' '.join(words[i: i + 7]) for i in range(0, len(words), 7)]
         return grouped_words
     
+    # Creation d'une image contenant le text donné en entré
     def convert_text_img(self):
         len_txt = len(self.text)
         groupe_text = self.splitTextToTriplet(self.text)
@@ -57,12 +59,13 @@ class Encode():
             return ['0']*(self.NB_BITS_16 - len(caracter)) + caracter
         return caracter
 
+    # Standarize the length of a binary number into 20bits (it's used for the size of the text)
     def standerdize_length_20(self, caracter):
         if len(caracter) < self.NB_BITS_20:
             return ['0']*(self.NB_BITS_20 - len(caracter)) + caracter
         return caracter
 
-    # insert boolean value into the image
+    # insert boolean value into the image it is used for the the size
     def insert_bool(self, img_cr_ravel, bool):
         imgA_cr_i_bit =  self.standerdize_length_16(self.to_bin(img_cr_ravel[0]))
         imgA_cr_i_bit[-6] = bool
@@ -70,6 +73,7 @@ class Encode():
 
         return img_cr_ravel
     
+    # insert the size of imgB into cr of imgA
     def insert_taille(self, img_cr_ravel, taille):
 
         if taille <=2**16 :
@@ -88,6 +92,7 @@ class Encode():
 
         return img_cr_ravel
     
+    # insert bits of imgB into pixels of imgA
     def insert_imgB(self, base, pixel_b, index):
     
         pixel_b_bit = self.standerdize_length_8(self.to_bin(pixel_b))
@@ -98,9 +103,8 @@ class Encode():
             base_i_bit[-5] = pixel_b_bit[2*i+1]
             base[index] =  int("".join(base_i_bit),2)
             index = index+i+1
-
         return base, index
-
+      #*********************************CODAGE********************************************
     def insert_into_image(self, imgB):
         imgB_ravel = imgB.ravel()
         imgA = self.img
@@ -121,7 +125,7 @@ class Encode():
         imgB_ravel_1 = imgB_ravel[:len(imgB_ravel)//2]
         imgB_ravel_2 = imgB_ravel[len(imgB_ravel)//2:]
         i=0
-        index = 5 if len(imgB_ravel) <= 255 else 9 
+        index = 5 if len(imgB_ravel) <= 255 else 9  # TRAITER LES CAS PARTICULERS
         while i < len(imgB_ravel_1):
             imgB_i_bit_1 = imgB_ravel_1[i]
             imgB_i_bit_2 = imgB_ravel_2[i]
@@ -141,14 +145,16 @@ class Encode():
         imgA_ravel = imgA.ravel()
         for i in range(len(imgA_ravel)):
             imgA_ravel_i= self.standerdize_length_16(self.to_bin(imgA_ravel[i]))
-            imgA_ravel_i[-4:] = ['0','1','1','1']
+            imgA_ravel_i[-4:] = ['0','1','1','1'] # pour eviter la perte d'information lors de la conversion
             imgA_ravel[i] = int("".join(imgA_ravel_i),2)
         imgA = imgA_ravel.reshape(imgA.shape)
         imgA = cv2.cvtColor(imgA, cv2.COLOR_YCrCb2RGB)
-        return imgA
 
+        return imgA
+    #*****************************************************************************
+    
+    # recuperer la taille de imgB des 1ers bits de imgA
     def getTaille(self, img_cr_ravel):
-        
         imgA_cr_0_bit =  self.standerdize_length_16(self.to_bin(img_cr_ravel[0]))
         if imgA_cr_0_bit[-6] == '0':
             taille_bit = ['0']*16
@@ -165,6 +171,7 @@ class Encode():
         taille =  int("".join(taille_bit),2)
         return taille
 
+    #recuperer les pixels de imgB de imgA
     def get_pixel(self, base, index):
         ranging = 4
         pixel_bit = ['0']*8
@@ -178,6 +185,7 @@ class Encode():
         pixel = int("".join(pixel_bit),2)
         return pixel, index
 
+    #**********************************DECODAGE**********************************
     def get_from_img(self):
         imgA = self.img
         #getting cr & cb
@@ -192,7 +200,6 @@ class Encode():
         imgB_ravel_1 = []
         imgB_ravel_2 = []
         i = 0
-        print("jebna la taille c bon...")
 
         while(i<taille_imgB_ravel//2):
 
@@ -201,7 +208,7 @@ class Encode():
             imgB_ravel_1.append(imgB_bit_1)
             imgB_ravel_2.append(imgB_bit_2)
             i+=1
-        print("jebna ravels")
+
 
         if len(imgB_ravel_1) <len(imgB_ravel_2):
             img_cb_ravel, _ = self.get_pixel(img_cb_ravel, i)
@@ -213,3 +220,5 @@ class Encode():
         imgB = np.asarray(imgB_ravel, dtype = np.uint8)
         imgB = imgB.reshape(shape)
         return imgB
+
+    #*********************************************************************
