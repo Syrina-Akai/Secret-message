@@ -172,6 +172,7 @@ class Encode():
             base_i_bit =  self.standerdize_length_16(self.to_bin(base[index]))
             pixel_bit[i*2] = base_i_bit[-6] 
             pixel_bit[2*i+1] = base_i_bit[-5]
+            base[index] = int("".join(base_i_bit),2)
             index = index+i+1
 
         pixel = int("".join(pixel_bit),2)
@@ -191,6 +192,7 @@ class Encode():
         imgB_ravel_1 = []
         imgB_ravel_2 = []
         i = 0
+        print("jebna la taille c bon...")
 
         while(i<taille_imgB_ravel//2):
 
@@ -199,12 +201,15 @@ class Encode():
             imgB_ravel_1.append(imgB_bit_1)
             imgB_ravel_2.append(imgB_bit_2)
             i+=1
-        
+        print("jebna ravels")
+
         if len(imgB_ravel_1) <len(imgB_ravel_2):
             img_cb_ravel, _ = self.get_pixel(img_cb_ravel, i)
 
         imgB_ravel = imgB_ravel_1 + imgB_ravel_2
+        
         shape = [int(taille_imgB_ravel/(60*7 *3)), int(60*7), 3]
+
         imgB = np.asarray(imgB_ravel, dtype = np.uint8)
         imgB = imgB.reshape(shape)
         return imgB
