@@ -20,12 +20,12 @@ class Ui(QtWidgets.QMainWindow):
         #button of decodage
         self.btn_decodage = self.findChild(QtWidgets.QPushButton, "btn_decodage")
         self.btn_decodage.clicked.connect(self.decodage_function)
-        self.btn_decodage.setEnabled(False)
+        #self.btn_decodage.setEnabled(False)
 
         #button of encodage
         self.btn_encodage = self.findChild(QtWidgets.QPushButton, "btn_encodage")
         self.btn_encodage.clicked.connect(self.codage_function)
-        self.btn_encodage.setEnabled(False)
+        #self.btn_encodage.setEnabled(False)
 
         #button of creation img from text
         self.btn_create_img_text = self.findChild(QtWidgets.QPushButton, "btn_create_img_text")
@@ -97,7 +97,7 @@ class Ui(QtWidgets.QMainWindow):
             print("image vide")
         else : 
             self.getPlot(layout='encodage')
-            self.btn_encodage.setEnabled(True)
+            #self.btn_encodage.setEnabled(True)
 
     def getData_decodage(self, path):
         self.img_decode_path = path
@@ -110,15 +110,14 @@ class Ui(QtWidgets.QMainWindow):
             print("image vide")
         else : 
             self.getPlot(layout='decodage')
-            self.btn_decodage.setEnabled(True)
+            #self.btn_decodage.setEnabled(True)
 
 #***************************************************SAVE IMAGE**************************************************** 
     def enregistrer_img(self):
         dialog = QtWidgets.QFileDialog()
         name = dialog.getSaveFileName(self,"Save image","",filter="PNG(*.png)")
         if(name[0]!=''):	
-            print(name)    
-            cv2.imwrite(name[0]+'.png', self.img_encodage)
+            cv2.imwrite(name[0], self.img_encodage)
             print("image saved.")
             self.btn_enregistrer.hide()
 
@@ -138,14 +137,11 @@ class Ui(QtWidgets.QMainWindow):
 #***************************************************CODE TEXT*****************************************************
 
     def code_text(self):
-        print("salutttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt")
         text = self.secretText_encodage.toPlainText()
         
         if text != '':
-            print("on va faire le codage du text")
             encodage = Encode(text = text)
             self.img_text = encodage.convert_text_img()
-            print("on a fait le codage")
             image = imutils.resize(self.img_text,width=500, height = self.img_text.shape[0])
             frame = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             image = QtGui.QImage(frame, frame.shape[1],frame.shape[0],frame.strides[0],QtGui.QImage.Format_RGB888)
@@ -153,26 +149,43 @@ class Ui(QtWidgets.QMainWindow):
 
 #***************************************************CODE IMAGE**************************************************** 
     def codage_function(self):
-        print("im here")
         if self.img_encode_path is not None :
             encode = Encode(self.img_encode_path)
             if len(self.img_text.ravel())+9 < len(self.img_encodage.ravel()) :
                 self.img_encodage =  encode.insert_into_image(self.img_text)
-                print(self.img_encodage)
                 if self.img_encodage!= []:
-                    print("codage done.")
                     self.secretText_encodage.setPlainText('')
                     self.btn_enregistrer.show()
+        else : 
+            message = "Aucune image n'est selectionné "
+            if self.secretText_encodage.toPlainText() == '':
+                message += "et text secret vide !"
+            else : message += "!"
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
             
+            msg.setText(message)
+            msg.setWindowTitle("Alerte codage")
+            msg.setStandardButtons(QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
+            retval = msg.exec_()
+                
 #***************************************************DECODE IMAGE**************************************************** 
     def decodage_function(self):
         if self.img_decode_path is not None :
             encode = Encode(self.img_decode_path)
-            img_text_decode =  encode.decodageImge()
+            img_text_decode =  encode.get_from_img()
             image = imutils.resize(img_text_decode,width=500, height = img_text_decode.shape[0])
             frame = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             image = QtGui.QImage(frame, frame.shape[1],frame.shape[0],frame.strides[0],QtGui.QImage.Format_RGB888)
             self.img_frame_text_decode.setPixmap(QtGui.QPixmap.fromImage(image))
+        else : 
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
+            
+            msg.setText("Aucune image n'est selectionné pour le décodage !")
+            msg.setWindowTitle("Alerte décodage")
+            msg.setStandardButtons(QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
+            retval = msg.exec_()
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

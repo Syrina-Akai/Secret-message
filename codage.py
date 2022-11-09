@@ -28,21 +28,16 @@ class Encode():
         return grouped_words
     
     def convert_text_img(self):
-        print("dkhelna converti text")
         len_txt = len(self.text)
-        print(len_txt)
         groupe_text = self.splitTextToTriplet(self.text)
         
         img1 = np.zeros((24*len(groupe_text), 60*7, 3), dtype = np.uint8)
         y_start = 15
         y_increment = 20
-        print(groupe_text)
         for i, line in enumerate(groupe_text):
             y = y_start + i*y_increment
             cv2.putText(img=img1, text=line, org=(0, y), fontFace=cv2.FONT_HERSHEY_DUPLEX, fontScale=0.5, color=(255,255,0), 
             thickness=1)
-
-        print("on a terminer le codage du text..........")
         
         return img1
 
@@ -125,7 +120,6 @@ class Encode():
         #on divise l'imgB en 2
         imgB_ravel_1 = imgB_ravel[:len(imgB_ravel)//2]
         imgB_ravel_2 = imgB_ravel[len(imgB_ravel)//2:]
-        print("taille avant codage : ", len(imgB_ravel))
         i=0
         index = 5 if len(imgB_ravel) <= 255 else 9 
         while i < len(imgB_ravel_1):
@@ -169,7 +163,6 @@ class Encode():
             taille_bit[2*i+1]= imgA_cr_i_bit[-5]
 
         taille =  int("".join(taille_bit),2)
-        print("taille avant codage : ", taille)
         return taille
 
     def get_pixel(self, base, index):
@@ -212,7 +205,6 @@ class Encode():
 
         imgB_ravel = imgB_ravel_1 + imgB_ravel_2
         shape = [int(taille_imgB_ravel/(60*7 *3)), int(60*7), 3]
-        print(shape)
         imgB = np.asarray(imgB_ravel, dtype = np.uint8)
         imgB = imgB.reshape(shape)
         return imgB
