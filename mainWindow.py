@@ -79,7 +79,7 @@ class Ui(QtWidgets.QMainWindow):
 
     def upload_data_decodage(self):
         dialog = QtWidgets.QFileDialog()
-        fname = dialog.getOpenFileName(None, "Import image", filter="JPG(*.jpg);;PNG(*.png)")
+        fname = dialog.getOpenFileName(None, "Import image", filter="PNG(*.png);;JPG(*.jpg)")
         if fname[0]!="":
             self.getData_decodage(fname[0])
 
