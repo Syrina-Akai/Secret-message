@@ -74,6 +74,7 @@
       <font>
        <family>Segoe UI</family>
        <pointsize>-1</pointsize>
+       <weight>50</weight>
        <bold>false</bold>
        <underline>false</underline>
        <strikeout>false</strikeout>
@@ -247,6 +248,7 @@
       <font>
        <family>Segoe UI</family>
        <pointsize>-1</pointsize>
+       <weight>50</weight>
        <bold>false</bold>
        <underline>false</underline>
        <strikeout>false</strikeout>
@@ -286,10 +288,10 @@
     <widget class="QPushButton" name="btn_decodage">
      <property name="geometry">
       <rect>
-       <x>300</x>
-       <y>40</y>
-       <width>171</width>
-       <height>51</height>
+       <x>500</x>
+       <y>290</y>
+       <width>121</width>
+       <height>41</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -326,8 +328,8 @@
       <rect>
        <x>40</x>
        <y>120</y>
-       <width>511</width>
-       <height>411</height>
+       <width>431</width>
+       <height>371</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="plot_img_decodage"/>
@@ -335,13 +337,29 @@
     <widget class="QWidget" name="verticalLayoutWidget_4">
      <property name="geometry">
       <rect>
-       <x>600</x>
+       <x>650</x>
        <y>120</y>
-       <width>511</width>
-       <height>411</height>
+       <width>461</width>
+       <height>371</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="plot_img_text_decod"/>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>540</x>
+       <y>220</y>
+       <width>51</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>fleche.png</pixmap>
+     </property>
     </widget>
    </widget>
   </widget>
