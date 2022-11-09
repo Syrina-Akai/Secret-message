@@ -121,7 +121,8 @@ class Encode():
         imgB_ravel_1 = imgB_ravel[:len(imgB_ravel)//2]
         imgB_ravel_2 = imgB_ravel[len(imgB_ravel)//2:]
         i=0
-        index = 5 if len(imgB_ravel) <= 255 else 9 
+        
+        index = 9 if len(imgB_ravel) <=2**16 else 11
         while i < len(imgB_ravel_1):
             imgB_i_bit_1 = imgB_ravel_1[i]
             imgB_i_bit_2 = imgB_ravel_2[i]
