@@ -150,13 +150,22 @@ class Ui(QtWidgets.QMainWindow):
 #***************************************************CODE IMAGE**************************************************** 
     def codage_function(self):
         if self.img_encode_path is not None :
-            encode = Encode(self.img_encode_path)
-            if len(self.img_text.ravel())+9 < len(self.img_encodage.ravel()) :
-                self.img_encodage =  encode.insert_into_image(self.img_text)
-                print()
-                if self.img_encodage.size != 0 :
-                    self.secretText_encodage.setPlainText('')
-                    self.btn_enregistrer.show()
+            img_encode_ravel = self.img_encodage.ravel()
+            img_text_ravel = self.img_text.ravel()
+            if len(img_text_ravel)+9>=len(img_encode_ravel):
+                msg = QtWidgets.QMessageBox()
+                msg.setIcon(QtWidgets.QMessageBox.Warning)
+                msg.setText("Le texte introduit est très grand par rapport à l'image qui va le contenir")
+                msg.setWindowTitle("Alerte texte ")
+                msg.setStandardButtons(QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
+                retval = msg.exec_()
+            else :
+                encode = Encode(self.img_encode_path)
+                if len(self.img_text.ravel())+9 < len(self.img_encodage.ravel()) :
+                    self.img_encodage =  encode.insert_into_image(self.img_text)
+                    if self.img_encodage.size != 0 :
+                        self.secretText_encodage.setPlainText('')
+                        self.btn_enregistrer.show()
         else : 
             message = "Aucune image n'est selectionné "
             if self.secretText_encodage.toPlainText() == '':
