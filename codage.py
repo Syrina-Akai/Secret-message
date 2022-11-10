@@ -92,7 +92,7 @@ class Encode():
 
         return img_cr_ravel
     
-    # insert bits of imgB into pixels of imgA
+    # insert one pixel of imgB into pixels of imgA
     def insert_imgB(self, base, pixel_b, index):
     
         pixel_b_bit = self.standerdize_length_8(self.to_bin(pixel_b))
